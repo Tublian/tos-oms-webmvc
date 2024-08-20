@@ -7,7 +7,6 @@ import com.oms.entity.OrderLine;
 import com.oms.entity.PaymentInfo;
 import com.oms.entity.SalesOrder;
 import com.oms.entity.Shipping;
-import com.oms.repository.SalesOrderRepository;
 import com.oms.util.Logger;
 
 import org.junit.Assert;
@@ -25,7 +24,7 @@ import java.util.List;
 public class ModifyFulfillmentServiceTest {
 
     @Mock
-    SalesOrderRepository salesOrderRepository;
+    OrderService orderService;
     @Mock
     PaymentService paymentService;
     @Mock
@@ -40,7 +39,7 @@ public class ModifyFulfillmentServiceTest {
 
     @Before
     public void setUp() {
-        modifyFulfillmentService.salesOrderRepository = salesOrderRepository;
+        modifyFulfillmentService.orderService = orderService;
         modifyFulfillmentService.paymentService = paymentService;
         modifyFulfillmentService.dinersPaymentService = dinersPaymentService;
         modifyFulfillmentService.emailService = emailService;
@@ -52,12 +51,12 @@ public class ModifyFulfillmentServiceTest {
     public void testModifyShipping() {
         SalesOrder salesOrder = getSalesOrder();
 
-        Mockito.when(salesOrderRepository.getOne("5678")).thenReturn(salesOrder);
+        Mockito.when(orderService.fetchOrder("5678")).thenReturn(salesOrder);
         Mockito.when(paymentService.authorize(Mockito.any()))
-                .thenReturn(new AuthorizationResponseDto("123",7.00,"SUCCESS"));
-        Mockito.when(salesOrderRepository.save(salesOrder)).thenReturn(salesOrder);
+                .thenReturn(new AuthorizationResponseDto("123", 7.00, "SUCCESS"));
+        Mockito.when(orderService.saveOrder(salesOrder)).thenReturn(salesOrder);
 
-        SalesOrder modifiedOrder = modifyFulfillmentService.modifyToShipping("1234",salesOrder);
+        SalesOrder modifiedOrder = modifyFulfillmentService.modifyToShipping("1234", salesOrder);
 
         Assert.assertNotNull(modifiedOrder);
     }
@@ -65,18 +64,18 @@ public class ModifyFulfillmentServiceTest {
     @Test
     public void testModifyStorePickup() {
         SalesOrder salesOrder = getSalesOrder();
-        AuthorizationResponseDto returnAuth = new AuthorizationResponseDto("123",7.00,"SUCCESS");
+        AuthorizationResponseDto returnAuth = new AuthorizationResponseDto("123", 7.00, "SUCCESS");
         Shipping shipping = new Shipping("SKU1", 8.0, 9.0, 10.0);
-        Mockito.when(salesOrderRepository.getOne("5678")).thenReturn(salesOrder);
+        Mockito.when(orderService.fetchOrder("5678")).thenReturn(salesOrder);
         Mockito.when(paymentService.reverseAuth(new AuthorizationRequestDto("VISA", "23445567", "12/24", "123", shipping.getStandardShipping())))
                 .thenReturn(returnAuth);
         Mockito.when(dinersPaymentService.reverseAuth(new AuthorizationRequestDto("VISA", "23445567", "12/24", "123", shipping.getStandardShipping())))
                 .thenReturn(returnAuth);
-        Mockito.when(salesOrderRepository.save(salesOrder)).thenReturn(salesOrder);
+        Mockito.when(orderService.saveOrder(salesOrder)).thenReturn(salesOrder);
         Mockito.when(shippingService.fetchShippingCharges("SKU1")).thenReturn(shipping);
 
         double authorizedB4 = salesOrder.getPaymentInfo().getAuthorizedAmount();
-        SalesOrder modifiedOrder = modifyFulfillmentService.modifyToStorePickup("1234",salesOrder);
+        SalesOrder modifiedOrder = modifyFulfillmentService.modifyToStorePickup("1234", salesOrder);
 
         Assert.assertNotNull(modifiedOrder);
         double authorizedAf = modifiedOrder.getPaymentInfo().getAuthorizedAmount();
@@ -101,5 +100,4 @@ public class ModifyFulfillmentServiceTest {
         salesOrder.setPaymentInfo(paymentInfo);
         return salesOrder;
     }
-
 }

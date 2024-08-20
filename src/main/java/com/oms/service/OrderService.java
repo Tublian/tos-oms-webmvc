@@ -1,3 +1,4 @@
+
 package com.oms.service;
 
 import com.oms.entity.SalesOrder;
@@ -26,7 +27,7 @@ public class OrderService {
 
     public SalesOrder fetchOrder(String customerOrderId) {
         logger.log(this.getClass().getName());
-        SalesOrder response = orderRepository.findById(customerOrderId).get();
+        SalesOrder response = orderRepository.findById(customerOrderId).orElse(null);
         return response;
     }
 
