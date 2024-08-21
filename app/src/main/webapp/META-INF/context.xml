@@ -1,0 +1,9 @@
+<?xml version='1.0' encoding='utf-8'?>
+<Context>
+    <!-- <ResourceLink name="jdbc/omsds" global="jdbc/omsds" type="javax.sql.DataSource" /> -->
+    <Resource name="jdbc/omsds" auth="Container" type="javax.sql.DataSource"
+              maxTotal="100" maxIdle="30" maxWaitMillis="10000"
+              username="admin" password="vFunction1!" driverClassName="com.mysql.cj.jdbc.Driver"
+              url="jdbc:mysql://oms-lab-eldad.chx4wdlptv9e.us-east-1.rds.amazonaws.com:3306/oms1?createDatabaseIfNotExist=true&amp;useSSL=false&amp;verifyServerCertificate=false&amp;requireSSL=false"/>
+
+</Context>

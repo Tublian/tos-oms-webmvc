@@ -15,7 +15,7 @@ SERVER_URL=${SERVER_URL:-http://${SERVER}:8080}/oms-0.0.1-SNAPSHOT/service
 
 curl --location --request POST ${SERVER_URL}'/inventory/multi-create' \
 --header 'Content-Type: application/json' \
---data-raw '[
+--data '[
     {
         "skuId":"SM-S20-BLK",
         "storeId": "11",

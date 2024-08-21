@@ -1,4 +1,3 @@
-
 # Order Management System (OMS)
 This is an example Spring application used by the tutorial of [vFunction](http://www.vfunction.com). 
 
@@ -10,18 +9,28 @@ This is an example Spring application used by the tutorial of [vFunction](http:/
 
 
 ## Compiling
-1. After cloning the repository, switch to oms-webmvc folder and compile using maven:  _mvn clean install_
+
+After cloning the repository, switch to oms-webmvc folder and compile using maven:  
+
+```
+mvn clean install
+```
+
+The pom.xml under oms-webmvc, compiles several sub-modules. The app module is the "main part" compiled into the war file, while the other modules are compiled into jar files to be bundeled into the war file (compiled from app)
 
 ## Running (in Tomcat)
-1. Copy the .war file under the target folder to the webapps folder in Tomcat (example:
-_cp ~/oms-tutorial/oms-webmvc/target/oms-0.0.1-SNAPSHOT.war /Library/Tomcat/webapps_ )
+
+1. Copy the .war file under the target folder to the app folder to Tomcat (example:
+```cp ~/oms-tutorial/oms-webmvc/app/target/oms-0.0.1-SNAPSHOT.war /Library/Tomcat/webapps```)
+
 2. Restart Tomcat (run shutdown.sh and startup.sh in the bin directory of Tomcat)
+
 3. To test that it works, go to the cloned repository. Switch to the script folder (e.g. ~/oms-webapp/script) and run  _./use_apis.sh_ . You shoud see printouts with OK at the end.
+
 4. Optionally, you can import the Postman collection under the script folder (OMS.postman_collection.json), review and run the various requests.
 
-## Viewing the H2 DB Console
-To browse the database, go to to `http://<server>:8080/oms-0.0.1-SNAPSHOT/admin/h2`, where server is the address of the server (e.g. [http://localhost:8080/oms-0.0.1-SNAPSHOT/admin/h2](http://localhost:8080/oms-0.0.1-SNAPSHOT/admin/h2)). 
-Use `sa`/`password` as credentials and `jdbc:h2:mem:testdb` as the JDBC URL.
+## Using MySQL DB
+The connection to MySQL DB is in _app/src/main/webapp/META_INF/context.xml_
 
 ## Design Overview
 

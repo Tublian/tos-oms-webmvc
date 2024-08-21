@@ -15,7 +15,7 @@ SERVER_URL=${SERVER_URL:-http://${SERVER}:8080}/oms-0.0.1-SNAPSHOT/service
 
 curl --location --request POST ${SERVER_URL}'/order/multi' \
 --header 'Content-Type: application/json' \
---data-raw '[
+--data '[
     {
         "customerOrderId": "1",
         "primaryPhone": "9525944805",

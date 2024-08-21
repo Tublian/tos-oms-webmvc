@@ -16,7 +16,7 @@ SERVER_URL=${SERVER_URL:-http://${SERVER}:8080}/oms-0.0.1-SNAPSHOT/service
 
 curl --location --request POST ${SERVER_URL}'/product/register-list' \
 --header 'Content-Type: application/json' \
---data-raw '[
+--data '[
     {
         "productId":"SM-S20-BLK",
         "name":"S20 Black",
