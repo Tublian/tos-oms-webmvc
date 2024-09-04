@@ -1,3 +1,4 @@
+
 package com.oms.util;
 
 import java.io.FileOutputStream;
@@ -15,9 +16,8 @@ public class Logger {
     public void log(String msg) {
         try {
             if (os == null) {
-                if (path == null) {
-                    //tests
-                    return;
+                if (path == null || !new java.io.File(path).canWrite()) {
+                    path = "default-log.txt";
                 }
                 os = new FileOutputStream(path, true);
             }
