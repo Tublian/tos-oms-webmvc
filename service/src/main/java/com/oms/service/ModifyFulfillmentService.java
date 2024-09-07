@@ -70,7 +70,7 @@ public class ModifyFulfillmentService {
     }
 
     public EmailRequestDto buildEmailRequest(SalesOrder salesOrder) {
-        return new EmailRequestDto("1234","Modify fulfillment","Your line item have been successfully modified for fulfillment","Modify to shipping from store pickup");
+        return new EmailRequestDto(salesOrder.getCustomerOrderId(), "Modify fulfillment", "Your line item has been successfully modified for fulfillment", "Modify to shipping from store pickup");
     }
 
     public SalesOrder modifyToStorePickup(String lineItemId,SalesOrder salesOrder) {
