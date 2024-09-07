@@ -7,10 +7,10 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.beans.factory.annotation.Autowired;
-import javax.mail.MessagingException;
-import javax.mail.internet.MimeMessage;
-
-import javax.mail.internet.InternetAddress;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.mail.MailException;
+import jakarta.mail.MessagingException;
+import java.util.Properties;
 import java.util.concurrent.atomic.AtomicInteger;
 
 @Component
@@ -20,15 +20,26 @@ public class EmailHttpClientImpl implements EmailHttpClient {
     @Autowired
     private JavaMailSender javaMailSender;
 
+    @Value("${spring.mail.host}")
+    private String smtpHost;
+
+    @Value("${spring.mail.port}")
+    private int smtpPort;
+
+    @Value("${spring.mail.username}")
+    private String smtpUsername;
+
+    @Value("${spring.mail.password}")
+    private String smtpPassword;
+
     @Override
     public String sendEmail(EmailRequestDto emailRequestDto) {
-        MimeMessage mimeMessage = javaMailSender.createMimeMessage();
         try {
             JavaMailSenderImpl mailSender = (JavaMailSenderImpl) javaMailSender;
-            mailSender.setHost("smtp.example.com");
-            mailSender.setPort(587);
-            mailSender.setUsername("your_username");
-            mailSender.setPassword("your_password");
+            mailSender.setHost(smtpHost);
+            mailSender.setPort(smtpPort);
+            mailSender.setUsername(smtpUsername);
+            mailSender.setPassword(smtpPassword);
 
             Properties props = mailSender.getJavaMailProperties();
             props.put("mail.transport.protocol", "smtp");
@@ -36,15 +47,14 @@ public class EmailHttpClientImpl implements EmailHttpClient {
             props.put("mail.smtp.starttls.enable", "true");
             props.put("mail.debug", "true");
 
-            MimeMessage mimeMessage = mailSender.createMimeMessage();
-            MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true);
-            helper.setFrom(new InternetAddress(emailRequestDto.getFrom()));
+            MimeMessageHelper helper = new MimeMessageHelper(mailSender.createMimeMessage(), true);
+            helper.setFrom(emailRequestDto.getFrom());
             helper.setTo(emailRequestDto.getTo());
             helper.setSubject(emailRequestDto.getSubject());
             helper.setText(emailRequestDto.getBody(), true);
-            mailSender.send(mimeMessage);
+            mailSender.send(helper.getMimeMessage());
             return String.format("SUCCESS %d", useCnt.incrementAndGet());
-        } catch (MessagingException e) {
+        } catch (MailException | MessagingException e) {
             e.printStackTrace();
             return "FAILURE";
         }

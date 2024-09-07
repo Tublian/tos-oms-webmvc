@@ -13,4 +13,10 @@ public class EmailRequestDto {
     private String body;
     private String from;
 
+    public EmailRequestDto(String to, String subject, String body, String from) {
+        this.to = to;
+        this.subject = subject;
+        this.body = body;
+        this.from = from;
+    }
 }
