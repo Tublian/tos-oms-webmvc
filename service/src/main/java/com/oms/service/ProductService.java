@@ -40,43 +40,43 @@ public class ProductService {
 
     
     public Product registerProduct(Product product) {
-        logger.log(this.getClass().getName());
+        logger.log(this.getClass().getName() + ": Registering product");
         Product response = productRepository.save(product);
         return response;   	
     }
 
     
     public Product getProductById(String pid) {
-        logger.log(this.getClass().getName());
+        logger.log(this.getClass().getName() + ": Fetching product by ID");
     	Optional<Product> findById = productRepository.findById(pid);
     	return findById.orElse(null);
     }
     
 
     public Product getProductByName(String name) {
-        logger.log(this.getClass().getName());
+        logger.log(this.getClass().getName() + ": Fetching product by name");
     	Optional<Product> findByName = productRepository.findByName(name);
     	return findByName.orElse(null);
     	
     }
     
     public List<Product> getAllProducts() {
-        logger.log(this.getClass().getName());
+        logger.log(this.getClass().getName() + ": Fetching all products");
         return productRepository.findAll();
     }
     
     public List<Product> getProductsDescribedWith(String text) {
-        logger.log(this.getClass().getName());
+        logger.log(this.getClass().getName() + ": Fetching products described with text");
         return productRepository.findByDescriptionContainingIgnoreCase(text);
     }
     
     public Inventory getProductInventory(String pid) {
-        logger.log(this.getClass().getName());
+        logger.log(this.getClass().getName() + ": Fetching product inventory");
     	return inventorySerice.fetchInventory(pid);
     }
     
     public List<Inventory> getInventoriesDescribedWith(String text) {
-        logger.log(this.getClass().getName());
+        logger.log(this.getClass().getName() + ": Fetching inventories described with text");
     	List<Inventory> inventoryList = new LinkedList<>();
     	
     	List<Product> products = getProductsDescribedWith(text); 
@@ -89,13 +89,13 @@ public class ProductService {
     
     
     public List<OrderLine> getOrderLinesForProduct(String pid) {
-        logger.log(this.getClass().getName());
+        logger.log(this.getClass().getName() + ": Fetching order lines for product");
         return orderLineRepository.findByCustomerSKU(pid);
     }
     
 
     public Double getTotalChargesForProduct(String pid) {
-        logger.log(this.getClass().getName());
+        logger.log(this.getClass().getName() + ": Calculating total charges for product");
         double res = 0;
     	
         List<OrderLine> orderLines = getOrderLinesForProduct(pid);
