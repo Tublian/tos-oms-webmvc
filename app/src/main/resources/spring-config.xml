@@ -58,7 +58,7 @@
 	</bean>
 
 	<bean id="logger" class="com.oms.util.Logger">
-		<property name="path" value="/var/log/oms/oms-log.txt"/>
+		<property name="path" value="oms-log.txt"/>
 	</bean>
 
 	<beans profile="replicated">

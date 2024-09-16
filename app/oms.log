@@ -1,0 +1,30 @@
+com.oms.service.AddressValidationService
+com.oms.service.AddressValidationService
+com.oms.service.AddressValidationService
+com.oms.service.AddressValidationService
+com.oms.service.PaymentService
+com.oms.service.PaymentService
+com.oms.service.ShippingService
+com.oms.service.OrderService
+com.oms.service.OrderService
+com.oms.service.EmailService
+com.oms.service.StoreSearchService
+com.oms.service.ProductService
+com.oms.service.InventoryService
+com.oms.service.ModifyFulfillmentService
+com.oms.service.ModifyFulfillmentService
+[com.oms.util.Logger] com.oms.service.AddressValidationService
+[com.oms.util.Logger] com.oms.service.AddressValidationService
+[com.oms.util.Logger] com.oms.service.AddressValidationService
+[com.oms.util.Logger] com.oms.service.AddressValidationService
+[com.oms.util.Logger] com.oms.service.PaymentService
+[com.oms.util.Logger] com.oms.service.PaymentService
+[com.oms.util.Logger] com.oms.service.ShippingService
+[com.oms.util.Logger] com.oms.service.OrderService
+[com.oms.util.Logger] com.oms.service.OrderService
+[com.oms.util.Logger] com.oms.service.EmailService
+[com.oms.util.Logger] com.oms.service.StoreSearchService
+[com.oms.util.Logger] com.oms.service.ProductService: Registering product
+[com.oms.util.Logger] com.oms.service.InventoryService
+[com.oms.util.Logger] com.oms.service.ModifyFulfillmentService
+[com.oms.util.Logger] com.oms.service.ModifyFulfillmentService
