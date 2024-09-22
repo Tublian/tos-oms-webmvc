@@ -1,10 +1,11 @@
+
 package com.oms.entity;
 
 import lombok.Getter;
 import lombok.Setter;
-
 import javax.persistence.*;
 import java.util.List;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 @Entity
 @Table(name = "SALES_ORDER")
@@ -18,6 +19,7 @@ public class SalesOrder {
     @Column(name = "PRIMARY_PHONE")
     private String primaryPhone;
 
+    @JsonProperty("customerEmailId")
     @Column(name = "CUSTOMER_EMAIL_ID")
     private String customerEmailId;
 
@@ -51,8 +53,6 @@ public class SalesOrder {
     @JoinColumn(name = "CUSTOMER_ORDER_ID")
     private List<OrderLine> orderLines;
 
-    /////@JoinColumn(name = "LINE_ITEM_ID")
-    
     @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "PAYMENT_ID")
     private PaymentInfo paymentInfo;
@@ -60,7 +60,6 @@ public class SalesOrder {
     @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "CHARGES_ID")
     private Charges charges;
-
 
     public String getCustomerOrderId() {
         return customerOrderId;
