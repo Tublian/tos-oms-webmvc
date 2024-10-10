@@ -1,3 +1,4 @@
+
 package com.oms.controller;
 
 import com.oms.entity.Inventory;
@@ -47,5 +48,10 @@ public class InventoryController {
         return createdInv;
     }
 
-
+    @GetMapping
+    @RequestMapping("/store/{storeId}")
+    public Inventory fetchInventoryByStoreId(@PathVariable String storeId) {
+        logger.log(this.getClass().getName());
+        return inventoryService.fetchInventoryByStoreId(storeId);
+    }
 }
