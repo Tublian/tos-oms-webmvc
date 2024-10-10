@@ -1,3 +1,4 @@
+
 package com.oms.entity;
 
 import javax.persistence.*;
@@ -6,8 +7,8 @@ import javax.persistence.*;
 @Table(name = "INVENTORY")
 public class Inventory {
 
-    @Column(name = "SKU_ID")
     @Id
+    @Column(name = "SKU_ID")
     private String skuId;
 
     @Column(name = "STORE_ID")

@@ -1,3 +1,4 @@
+
 package com.oms.service;
 
 import com.oms.entity.Inventory;
@@ -33,5 +34,11 @@ public class InventoryService {
 
     public void setLogger(Logger logger) {
         this.logger = logger;
+    }
+
+    @Transactional
+    public Inventory fetchInventoryByStoreId(String storeId) {
+        logger.log(this.getClass().getName());
+        return inventoryRegion.get(storeId);
     }
 }
