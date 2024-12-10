@@ -1,19 +1,26 @@
+
 package com.oms.entity;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
+@IdClass(InventoryId.class)
 @Entity
 @Table(name = "INVENTORY")
 public class Inventory {
 
-    @Column(name = "SKU_ID")
+    @NotNull
     @Id
+    @Column(name = "SKU_ID", nullable = false)
     private String skuId;
 
-    @Column(name = "STORE_ID")
+    @NotNull
+    @Id
+    @Column(name = "STORE_ID", nullable = false)
     private String storeId;
 
-    @Column(name = "QTY")
+    @NotNull
+    @Column(name = "QTY", nullable = false)
     private int quantity;
 
     public Inventory() {
