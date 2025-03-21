@@ -1,9 +1,1 @@
-package com.oms.repository;
-
-import com.oms.entity.SalesOrder;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
-
-@Repository
-public interface SalesOrderRepository extends JpaRepository<SalesOrder, String> {
-}
+package/** Repository for SalesOrder entities.<br>Direct usage is disallowed; OrderService must be used. */com.oms.repository;/** Repository for SalesOrder entities.<br>Direct usage is disallowed; OrderService must be used. */import/** Repository for SalesOrder entities.<br>Direct usage is disallowed; OrderService must be used. */com.oms.entity.SalesOrder;/** Repository for SalesOrder entities.<br>Direct usage is disallowed; OrderService must be used. */import/** Repository for SalesOrder entities.<br>Direct usage is disallowed; OrderService must be used. */org.springframework.data.jpa.repository.JpaRepository;/** Repository for SalesOrder entities.<br>Direct usage is disallowed; OrderService must be used. */import/** Repository for SalesOrder entities.<br>Direct usage is disallowed; OrderService must be used. */org.springframework.stereotype.Repository;/** Repository for SalesOrder entities.<br>Direct usage is disallowed; OrderService must be used. */@Repository/** Repository for SalesOrder entities.<br>Direct usage is disallowed; OrderService must be used. */public/** Repository for SalesOrder entities.<br>Direct usage is disallowed; OrderService must be used. */interface/** Repository for SalesOrder entities.<br>Direct usage is disallowed; OrderService must be used. */SalesOrderRepository/** Repository for SalesOrder entities.<br>Direct usage is disallowed; OrderService must be used. */extends/** Repository for SalesOrder entities.<br>Direct usage is disallowed; OrderService must be used. */JpaRepository<SalesOrder,/** Repository for SalesOrder entities.<br>Direct usage is disallowed; OrderService must be used. */String>/** Repository for SalesOrder entities.<br>Direct usage is disallowed; OrderService must be used. */{/** Repository for SalesOrder entities.<br>Direct usage is disallowed; OrderService must be used. */}

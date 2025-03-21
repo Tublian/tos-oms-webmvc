@@ -1,11 +1,10 @@
+
 package com.oms.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.oms.entity.SalesOrder;
 import com.oms.repository.SalesOrderRepository;
-import com.oms.util.Logger;
-
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -20,12 +19,12 @@ public class OrderServiceTest {
     @Mock
     SalesOrderRepository orderRepository;
 
-    OrderService orderService = new OrderService();
+    // Use a subclass of OrderService which provides the setter so that the tests compile.
+    OrderService orderService = new TestableOrderService();
 
     @Before
     public void setUp() {
-        orderService.orderRepository = orderRepository;
-        orderService.setLogger(new Logger());
+        orderService.setOrderRepository(orderRepository);
     }
 
     @Test
@@ -45,8 +44,8 @@ public class OrderServiceTest {
         SalesOrder order = orderService.fetchOrder("1234");
 
         Assert.assertNotNull(order);
-        Assert.assertEquals(order.getCustomerOrderId(),"1234");
-        Assert.assertEquals(order.getOrderStatus() , "COMPLETED");
+        Assert.assertEquals(order.getCustomerOrderId(), "1234");
+        Assert.assertEquals(order.getOrderStatus(), "COMPLETED");
     }
 
     @Test
@@ -60,7 +59,14 @@ public class OrderServiceTest {
         SalesOrder order = orderService.saveOrder(salesOrder);
 
         Assert.assertNotNull(order);
-        Assert.assertEquals(order.getCustomerOrderId(),"1234");
-        Assert.assertEquals(order.getOrderStatus() , "COMPLETED");
+        Assert.assertEquals(order.getCustomerOrderId(), "1234");
+        Assert.assertEquals(order.getOrderStatus(), "COMPLETED");
+    }
+
+    // Added an inner class to provide the required setter method.
+    private static class TestableOrderService extends OrderService {
+        public void setOrderRepository(SalesOrderRepository orderRepository) {
+            this.orderRepository = orderRepository;
+        }
     }
 }
