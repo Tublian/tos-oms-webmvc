@@ -30,9 +30,6 @@ public class ProductService {
 
     @Autowired
     OrderLineRepository orderLineRepository;
-    
-    @Autowired
-    ShippingService shippingService;
 
     // logging 
     @Autowired
@@ -107,10 +104,6 @@ public class ProductService {
     	return res;
     }
     
-    public Shipping getShippingCosts(String pid) { // dead code.... testing only....
-    	return shippingService.fetchShippingCharges(pid);
-    }
-    
     public void setLogger(Logger logger) {
         this.logger = logger;
     }
@@ -146,13 +139,4 @@ public class ProductService {
     }
 
 
-    public ShippingService getShippingService() {
-        return shippingService;
     }
-
-
-    public void setShippingService(ShippingService shippingService) {
-        this.shippingService = shippingService;
-    }
-
-}

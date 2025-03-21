@@ -26,7 +26,8 @@ public class ProductServiceTest {
 	@Before
 	public void setUp() {
 		productService.productRepository = productRepository;
-		productService.setLogger(new Logger());
+		// Updated to use DummyLogger to resolve type incompatibility issues.
+		productService.setLogger(new DummyLogger());
 	}
 
 	@Test
@@ -46,6 +47,38 @@ public class ProductServiceTest {
 		}
 
 		assertNotNull(productService.registerProduct(p1));
+	}
 
+	// DummyLogger implementation updated to match the production Logger abstract contract.
+	public static class DummyLogger extends Logger {
+		@Override
+		public void log(String message) {
+			// No-op implementation for testing.
+		}
+
+		@Override
+		public void error(String message) {
+			// No-op implementation for testing.
+		}
+
+		@Override
+		public void info(String message) {
+			// No-op implementation for testing.
+		}
+
+		@Override
+		public void debug(String message) {
+			// No-op implementation for testing.
+		}
+
+		@Override
+		public void warn(String message) {
+			// No-op implementation for testing.
+		}
+
+		@Override
+		public void fatal(String message) {
+			// No-op implementation for testing.
+		}
 	}
 }
