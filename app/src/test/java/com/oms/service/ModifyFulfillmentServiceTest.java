@@ -99,7 +99,8 @@ public class ModifyFulfillmentServiceTest {
         paymentInfo.setAuthorizedAmount(100.00);
         paymentInfo.setCardType("VISA");
         salesOrder.setPaymentInfo(paymentInfo);
-        return salesOrder;
+        salesOrder.setCustomerEmailId("test@example.com");
+return salesOrder;
     }
 
 }

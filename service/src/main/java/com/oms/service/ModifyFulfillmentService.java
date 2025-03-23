@@ -70,7 +70,17 @@ public class ModifyFulfillmentService {
     }
 
     public EmailRequestDto buildEmailRequest(SalesOrder salesOrder) {
-        return new EmailRequestDto("1234","Modify fulfillment","Your line item have been successfully modified for fulfillment","Modify to shipping from store pickup");
+        if (salesOrder == null) {
+    throw new IllegalArgumentException("SalesOrder parameter cannot be null");
+}
+String customerEmail = salesOrder.getCustomerEmailId();
+if (StringUtils.isEmpty(customerEmail)) {
+    throw new IllegalArgumentException("SalesOrder must have a valid customer email");
+}
+String orderId = salesOrder.getCustomerOrderId();
+return new EmailRequestDto(customerEmail, "Order " + orderId + " Modification",
+        "Your order " + orderId + " has been updated successfully",
+        "Modify to shipping from store pickup");
     }
 
     public SalesOrder modifyToStorePickup(String lineItemId,SalesOrder salesOrder) {
