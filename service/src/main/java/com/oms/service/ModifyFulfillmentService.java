@@ -7,6 +7,7 @@ import com.oms.entity.OrderLine;
 import com.oms.entity.SalesOrder;
 import com.oms.entity.Shipping;
 import com.oms.repository.SalesOrderRepository;
+import com.oms.service.OrderService;
 import com.oms.util.Logger;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +22,7 @@ import java.util.List;
 public class ModifyFulfillmentService {
 
     @Autowired
-    SalesOrderRepository salesOrderRepository;
+OrderService orderService;
 
     @Autowired
     PaymentService paymentService;
@@ -41,7 +42,7 @@ public class ModifyFulfillmentService {
     public SalesOrder modifyToShipping(String lineItemId, SalesOrder salesOrder) {
         logger.log(this.getClass().getName());
         if (salesOrder != null && !StringUtils.isEmpty(salesOrder.getCustomerOrderId())) {
-            SalesOrder originalSalesOrder = salesOrderRepository.getOne(salesOrder.getCustomerOrderId());
+            SalesOrder originalSalesOrder = orderService.fetchOrder(salesOrder.getCustomerOrderId());
             OrderLine orderLine = fetchOrderLineFromItemId(lineItemId, originalSalesOrder);
             double shippingAmount = getShippingAmount(orderLine.getCustomerSKU());
             if (orderLine != null && orderLine.getCharges() != null && orderLine.getCharges().getTotalCharges() != null) {
@@ -53,7 +54,7 @@ public class ModifyFulfillmentService {
                     dinersPaymentService.authorize(authorizationRequestDto);
                     if (responseDto != null && !StringUtils.isEmpty(responseDto.getId()) && !StringUtils.isEmpty(responseDto.getAmount())) {
                         originalSalesOrder.getPaymentInfo().setAuthorizedAmount(originalSalesOrder.getPaymentInfo().getAuthorizedAmount() + responseDto.getAmount());
-                        salesOrderRepository.save(originalSalesOrder);
+                        orderService.saveOrder(originalSalesOrder);
                         emailService.sendEmail(buildEmailRequest(originalSalesOrder));
                         BeanUtils.copyProperties(originalSalesOrder, salesOrder);
                     }
@@ -76,7 +77,7 @@ public class ModifyFulfillmentService {
     public SalesOrder modifyToStorePickup(String lineItemId,SalesOrder salesOrder) {
         logger.log(this.getClass().getName());
         if(salesOrder != null && !StringUtils.isEmpty(salesOrder.getCustomerOrderId())){
-            SalesOrder originalSalesOrder = salesOrderRepository.getOne(salesOrder.getCustomerOrderId());
+            SalesOrder originalSalesOrder = orderService.fetchOrder(salesOrder.getCustomerOrderId());
             OrderLine orderLine = fetchOrderLineFromItemId(lineItemId ,originalSalesOrder);
             double shippingAmount = getShippingAmount(orderLine.getCustomerSKU());
             if(orderLine != null && orderLine.getCharges() != null && orderLine.getCharges().getTotalCharges() != null){
@@ -88,7 +89,7 @@ public class ModifyFulfillmentService {
                     dinersPaymentService.reverseAuth(authorizationRequestDto);
                     if(responseDto != null && !StringUtils.isEmpty(responseDto.getId()) && !StringUtils.isEmpty(responseDto.getAmount())){
                         originalSalesOrder.getPaymentInfo().setAuthorizedAmount(originalSalesOrder.getPaymentInfo().getAuthorizedAmount() - responseDto.getAmount());
-                        salesOrderRepository.save(originalSalesOrder);
+                        orderService.saveOrder(originalSalesOrder);
                         emailService.sendEmail(buildEmailRequest(originalSalesOrder));
                         BeanUtils.copyProperties(originalSalesOrder, salesOrder);
                     }
