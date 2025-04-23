@@ -1,3 +1,4 @@
+
 package com.oms.util;
 
 import java.io.FileOutputStream;
@@ -7,9 +8,14 @@ import java.io.PrintWriter;
 public class Logger {
     private String path;
     private FileOutputStream os;
+    private String fallbackLogFile;
 
     public void setPath(String path) {
         this.path = path;
+    }
+    
+    public void setFallbackLogFile(String fallbackLogFile) {
+        this.fallbackLogFile = fallbackLogFile;
     }
 
     public void log(String msg) {
@@ -26,7 +32,22 @@ public class Logger {
             pw.flush();
             os.flush();
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            os = null;
+            if (fallbackLogFile != null) {
+                setPath(fallbackLogFile);
+            } else {
+                setPath("oms.log");
+            }
+            try {
+                FileOutputStream fallbackOut = new FileOutputStream(path, true);
+                PrintWriter pwFallback = new PrintWriter(fallbackOut);
+                pwFallback.println("Warning: original log attempt failed.");
+                pwFallback.flush();
+                fallbackOut.flush();
+                fallbackOut.close();
+            } catch (IOException ex) {
+                // empty
+            }
         }
     }
 }
