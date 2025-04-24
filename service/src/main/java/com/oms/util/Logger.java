@@ -1,3 +1,4 @@
+
 package com.oms.util;
 
 import java.io.FileOutputStream;
@@ -13,6 +14,10 @@ public class Logger {
     }
 
     public void log(String msg) {
+        if (path == null || path.trim().isEmpty()) {
+            System.err.println("Warning: Log file path is not provided. Defaulting to oms.log");
+            path = "oms.log";
+        }
         try {
             if (os == null) {
                 if (path == null) {
@@ -26,7 +31,8 @@ public class Logger {
             pw.flush();
             os.flush();
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            System.err.println("Warning: Unable to write to log file: " + e.getMessage());
+            return;
         }
     }
 }
