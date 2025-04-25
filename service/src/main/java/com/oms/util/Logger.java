@@ -1,32 +1,30 @@
+
 package com.oms.util;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.PrintWriter;
 
 public class Logger {
-    private String path;
-    private FileOutputStream os;
+    private FileOutputStream outputStream;
 
     public void setPath(String path) {
-        this.path = path;
+        try {
+            outputStream = new FileOutputStream(path, true);
+        } catch(IOException e) {
+            System.err.println("Failed to initialize FileOutputStream with path: " + path + ". Error: " + e.getMessage());
+            try {
+                outputStream = new FileOutputStream("oms.log", true);
+            } catch(IOException ex) {
+                System.err.println("Failed to initialize FileOutputStream with default path oms.log. Error: " + ex.getMessage());
+            }
+        }
     }
 
-    public void log(String msg) {
+    public void log(String message) {
         try {
-            if (os == null) {
-                if (path == null) {
-                    //tests
-                    return;
-                }
-                os = new FileOutputStream(path, true);
-            }
-            PrintWriter pw = new PrintWriter(os);
-            pw.println(msg);
-            pw.flush();
-            os.flush();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+            outputStream.write((message + "\n").getBytes());
+        } catch(IOException e) {
+            System.err.println("Logging error: " + e.getMessage());
         }
     }
 }
