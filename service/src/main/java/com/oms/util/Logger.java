@@ -1,3 +1,4 @@
+
 package com.oms.util;
 
 import java.io.FileOutputStream;
@@ -19,7 +20,12 @@ public class Logger {
                     //tests
                     return;
                 }
-                os = new FileOutputStream(path, true);
+                try {
+                    os = new FileOutputStream(path, true);
+                } catch (IOException innerE) {
+                    System.err.println("Warning: unable to open log file at " + path + ", using fallback 'oms.log'");
+                    os = new FileOutputStream("oms.log", true);
+                }
             }
             PrintWriter pw = new PrintWriter(os);
             pw.println(msg);
