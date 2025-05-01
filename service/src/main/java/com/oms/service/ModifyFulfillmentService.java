@@ -27,12 +27,8 @@ public class ModifyFulfillmentService {
     PaymentService paymentService;
 
     @Autowired
-    DinersPaymentService dinersPaymentService;
-
-    @Autowired
-    EmailService emailService;
-
-    @Autowired
+    DinersPaymentService dinersPaymentService;    private EmailService emailService;
+@Autowired
     ShippingService shippingService;
 
     @Autowired
@@ -52,10 +48,10 @@ public class ModifyFulfillmentService {
                     AuthorizationResponseDto responseDto = paymentService.authorize(authorizationRequestDto);
                     dinersPaymentService.authorize(authorizationRequestDto);
                     if (responseDto != null && !StringUtils.isEmpty(responseDto.getId()) && !StringUtils.isEmpty(responseDto.getAmount())) {
-                        originalSalesOrder.getPaymentInfo().setAuthorizedAmount(originalSalesOrder.getPaymentInfo().getAuthorizedAmount() + responseDto.getAmount());
-                        salesOrderRepository.save(originalSalesOrder);
-                        emailService.sendEmail(buildEmailRequest(originalSalesOrder));
-                        BeanUtils.copyProperties(originalSalesOrder, salesOrder);
+                        originalSalesOrder.getPaymentInfo().setAuthorizedAmount(originalSalesOrder.getPaymentInfo().getAuthorizedAmount() + responseDto.getAmount());                        salesOrderRepository.save(originalSalesOrder);
+                        EmailRequestDto emailRequestDto = buildEmailRequest(originalSalesOrder);
+                        emailService.sendEmail(emailRequestDto);
+BeanUtils.copyProperties(originalSalesOrder, salesOrder);
                     }
                 }
             }
@@ -67,13 +63,17 @@ public class ModifyFulfillmentService {
         List<OrderLine> orderLines = salesOrder.getOrderLines();
         OrderLine orderLine = orderLines.stream().filter(line -> line.getLineItemId().equalsIgnoreCase(lineItemId)).findAny().orElse(null);
         return orderLine;
-    }
+    }    public EmailRequestDto buildEmailRequest(SalesOrder salesOrder) {
+        String customerEmailId = salesOrder.getCustomerEmailId();
+        String salesOrderNumber = salesOrder.getCustomerOrderId();
+        String messageTitle = "Order Modification - Order ID: " + salesOrderNumber;
+        String messageBody = "Your order " + salesOrderNumber +
+                " has been modified successfully. Please contact support for any questions.";
+        String emailType = "FulfillmentModification";
 
-    public EmailRequestDto buildEmailRequest(SalesOrder salesOrder) {
-        return new EmailRequestDto("1234","Modify fulfillment","Your line item have been successfully modified for fulfillment","Modify to shipping from store pickup");
+        return new EmailRequestDto(customerEmailId, messageTitle, messageBody, emailType);
     }
-
-    public SalesOrder modifyToStorePickup(String lineItemId,SalesOrder salesOrder) {
+public SalesOrder modifyToStorePickup(String lineItemId,SalesOrder salesOrder) {
         logger.log(this.getClass().getName());
         if(salesOrder != null && !StringUtils.isEmpty(salesOrder.getCustomerOrderId())){
             SalesOrder originalSalesOrder = salesOrderRepository.getOne(salesOrder.getCustomerOrderId());
@@ -87,10 +87,10 @@ public class ModifyFulfillmentService {
                     AuthorizationResponseDto responseDto = paymentService.reverseAuth(authorizationRequestDto);
                     dinersPaymentService.reverseAuth(authorizationRequestDto);
                     if(responseDto != null && !StringUtils.isEmpty(responseDto.getId()) && !StringUtils.isEmpty(responseDto.getAmount())){
-                        originalSalesOrder.getPaymentInfo().setAuthorizedAmount(originalSalesOrder.getPaymentInfo().getAuthorizedAmount() - responseDto.getAmount());
-                        salesOrderRepository.save(originalSalesOrder);
-                        emailService.sendEmail(buildEmailRequest(originalSalesOrder));
-                        BeanUtils.copyProperties(originalSalesOrder, salesOrder);
+                        originalSalesOrder.getPaymentInfo().setAuthorizedAmount(originalSalesOrder.getPaymentInfo().getAuthorizedAmount() - responseDto.getAmount());                        salesOrderRepository.save(originalSalesOrder);
+                        EmailRequestDto emailRequestDto = buildEmailRequest(originalSalesOrder);
+                        emailService.sendEmail(emailRequestDto);
+BeanUtils.copyProperties(originalSalesOrder, salesOrder);
                     }
                 }
             }
